@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -75,3 +76,19 @@ export function encryptKey(passkey: string) {
 export function decryptKey(passkey: string) {
   return atob(passkey);
 }
+export const authFormSchema = (type: string) => z.object({
+  // Campos específicos para registro (sign-up)
+  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3, { message: "El nombre debe tener al menos 3 caracteres" }),
+  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3, { message: "El apellido debe tener al menos 3 caracteres" }),
+  tipoDNA: type === "sign-in" ? z.string().optional() : z.string().min(10, { message: "El tipo de documento debe tener al menos 10 caracteres" }),
+  DNA: type === "sign-in" ? z.string().optional() : z.string().min(10, { message: "El documento debe tener al menos 10 caracteres" }),
+  address: type === "sign-in" ? z.string().optional() : z.string().max(50, { message: "La dirección no puede exceder los 50 caracteres" }),
+  departament: type === "sign-in" ? z.string().optional() : z.string().min(2, { message: "El departamento debe tener al menos 2 caracteres" }),
+  city: type === "sign-in" ? z.string().optional() : z.string().min(2, { message: "La ciudad debe tener al menos 2 caracteres" }),
+  dob: type === "sign-in" ? z.string().optional() : z.string().min(2, { message: "La fecha de nacimiento debe tener al menos 2 caracteres" }),
+
+  // Campos comunes para ambos tipos de formulario
+  email: z.string().email({ message: "Por favor, introduce una dirección de correo electrónico válida" }),
+  password: z.string().min(8,
+    { message: "La contraseña debe tener al menos 8 caracteres" }),
+})

@@ -16,9 +16,6 @@ export default function Home() {
               alt="JAM"
               className="mb-12 h-10 w-fit"
             />
-            <p className="mb-8 text-14-regular text-dark-600">
-              {/* ... your existing content ... */}
-            </p>
           </div>
           <RegisterForm />
           <div className=" text-14-regular mt-20 flex justify-between">
